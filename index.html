@@ -1,0 +1,352 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guardian Shield - Automated Security Audits</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .hero-gradient {
+            background: linear-gradient(120deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .gemini-button {
+            background: linear-gradient(to right, #4f46e5, #818cf8);
+            border: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .gemini-button:hover {
+            box-shadow: 0 0 15px rgba(129, 140, 248, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                <h1 class="text-2xl font-bold text-gray-800">Guardian Shield</h1>
+            </div>
+            <button class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                Sign In
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-6 py-12">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">Cybersecurity for Founders, Simplified.</h2>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                Stop worrying about security jargon. Get a simple, AI-powered "Go / No-Go" report before you launch. Make honest money without risking your users' precious data.
+            </p>
+        </section>
+
+        <!-- The "Magic Link" Input -->
+        <section id="scanner-section" class="max-w-2xl mx-auto bg-white p-8 rounded-xl card-shadow">
+            <div class="flex items-center space-x-2 mb-4">
+                 <div class="bg-blue-100 text-blue-600 p-2 rounded-full">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                 </div>
+                <h3 class="text-xl font-semibold">Connect Your Project</h3>
+            </div>
+            <p class="text-gray-500 mb-6">Enter the live URL of your web app to start the free security audit.</p>
+            <div class="flex flex-col sm:flex-row gap-4">
+                <input id="url-input" type="url" placeholder="https://your-awesome-app.com" class="flex-grow w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <button id="scan-button" class="bg-blue-600 text-white font-bold px-6 py-3 rounded-lg hover:bg-blue-700 transition duration-300 w-full sm:w-auto">
+                    Start Free Scan
+                </button>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results-section" class="mt-12 max-w-4xl mx-auto hidden">
+            <!-- Loader -->
+            <div id="loader" class="text-center p-8">
+                <div class="flex justify-center items-center space-x-4">
+                    <svg class="animate-spin h-8 w-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-xl font-semibold text-gray-700">Analyzing your project... This may take a moment.</p>
+                </div>
+                 <p class="text-gray-500 mt-4">Our AI is checking for vulnerabilities, analyzing risks, and preparing your simplified report.</p>
+            </div>
+
+            <!-- Report Output -->
+            <div id="report-output" class="hidden">
+                <!-- Report will be dynamically generated here -->
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const scanButton = document.getElementById('scan-button');
+        const urlInput = document.getElementById('url-input');
+        const resultsSection = document.getElementById('results-section');
+        const loader = document.getElementById('loader');
+        const reportOutput = document.getElementById('report-output');
+        const scannerSection = document.getElementById('scanner-section');
+        
+        // This will store the generated report to be used by other AI features
+        let currentReportData = null;
+
+        scanButton.addEventListener('click', async () => {
+            const url = urlInput.value;
+            if (!isValidUrl(url)) {
+                // Replaced alert with a less intrusive notification method
+                urlInput.classList.add('border-red-500', 'ring-red-500');
+                urlInput.focus();
+                setTimeout(() => urlInput.classList.remove('border-red-500', 'ring-red-500'), 3000);
+                return;
+            }
+
+            // --- UI Changes for Scanning ---
+            scannerSection.classList.add('opacity-50');
+            scanButton.disabled = true;
+            scanButton.textContent = 'Scanning...';
+            resultsSection.classList.remove('hidden');
+            loader.classList.remove('hidden');
+            reportOutput.classList.add('hidden');
+            reportOutput.innerHTML = ''; // Clear previous results
+
+            try {
+                // --- Simulate a scan and get mock data ---
+                const mockScanData = getMockVulnerabilities();
+
+                // --- Call the AI "Validator" ---
+                const aiReport = await getAiValidation(mockScanData);
+                currentReportData = aiReport; // Store report for other features
+
+                // --- Render the final report ---
+                renderReport(aiReport, url);
+
+            } catch (error) {
+                console.error('Error during scan:', error);
+                reportOutput.innerHTML = `<div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-lg" role="alert">
+                    <p class="font-bold">An Error Occurred</p>
+                    <p>We couldn't complete the scan. Please try again later. Error: ${error.message}</p>
+                </div>`;
+            } finally {
+                // --- Final UI state ---
+                loader.classList.add('hidden');
+                reportOutput.classList.remove('hidden');
+                scannerSection.classList.remove('opacity-50');
+                scanButton.disabled = false;
+                scanButton.textContent = 'Start Free Scan';
+            }
+        });
+        
+        // Event listener for the new Executive Summary button
+        document.addEventListener('click', async (event) => {
+            if (event.target.id === 'generate-summary-btn') {
+                const button = event.target;
+                const summaryOutput = document.getElementById('executive-summary-output');
+                const summaryLoader = document.getElementById('summary-loader');
+
+                button.disabled = true;
+                summaryLoader.classList.remove('hidden');
+                summaryOutput.classList.add('hidden');
+
+                try {
+                    const summaryText = await generateExecutiveSummary(currentReportData);
+                    summaryOutput.innerHTML = `<p>${summaryText.replace(/\n/g, '<br>')}</p>`; // Display summary with line breaks
+                } catch(error) {
+                    summaryOutput.innerHTML = `<p class="text-red-500">Could not generate summary. ${error.message}</p>`;
+                } finally {
+                    button.classList.add('hidden'); // Hide button after use
+                    summaryLoader.classList.add('hidden');
+                    summaryOutput.classList.remove('hidden');
+                }
+            }
+        });
+
+        function isValidUrl(string) {
+            try {
+                new URL(string);
+                return true;
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function getMockVulnerabilities() {
+            return {
+                "vulnerabilities": [
+                    { "id": "CVE-2021-34527", "packageName": "old-image-library", "version": "1.2.3", "severity": "CRITICAL", "description": "Remote Code Execution vulnerability in image processing component." },
+                    { "id": "NUCLEI-MEDIUM-1", "checkName": "missing-hsts-header", "severity": "MEDIUM", "description": "The Strict-Transport-Security (HSTS) header is not set." },
+                    { "id": "NUCLEI-LOW-1", "checkName": "server-version-exposed", "severity": "LOW", "description": "The server is exposing its version number in the 'Server' header (nginx/1.18.0)." }
+                ]
+            };
+        }
+
+        // --- AI "Validator" Logic using Gemini API ---
+        async function getAiValidation(scanData) {
+            const prompt = `
+                You are "Guardian Shield AI", a cybersecurity analyst expert who explains complex security issues to non-technical founders. Your tone is calm, reassuring, and helpful, not alarming. You will receive a JSON object containing raw vulnerability data from a security scan. Your task is to analyze this data and generate a JSON response with a clear, simple report.
+                Here is the raw scan data:
+                ${JSON.stringify(scanData, null, 2)}
+                Based on this data, perform the following actions:
+                1. Determine an overall verdict: "GREEN" (no critical/high risks), "YELLOW" (medium/low risks only), or "RED" (at least one critical/high risk).
+                2. For each vulnerability, create a simplified finding object containing:
+                    - "title": A simple, human-readable name for the issue.
+                    - "what_it_is": A one-sentence explanation in plain English.
+                    - "why_it_matters": A one-sentence explanation of the real-world risk.
+                    - "how_to_fix": A simple, actionable step-by-step guide. If it involves code, provide a small, clear snippet.
+                    - "severity": The original severity level (CRITICAL, HIGH, MEDIUM, LOW).
+                Your final output MUST be a single, valid JSON object with the following structure:
+                { "verdict": "GREEN" | "YELLOW" | "RED", "summary": "A one-sentence summary of the overall security posture.", "findings": [ { "title": "...", "what_it_is": "...", "why_it_matters": "...", "how_to_fix": "...", "severity": "..." } ] }
+            `;
+            
+            const apiKey = ""; // Left empty as per instructions for Canvas environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                generationConfig: { responseMimeType: "application/json" }
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API call failed with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                const jsonText = result.candidates[0].content.parts[0].text;
+                return JSON.parse(jsonText);
+            } else {
+                console.error("Unexpected API response structure:", result);
+                throw new Error("Failed to parse AI response. The response structure was unexpected.");
+            }
+        }
+        
+        // --- ✨ New Gemini API Feature: Executive Summary ---
+        async function generateExecutiveSummary(reportData) {
+            const prompt = `
+                You are "Guardian Shield AI". You are writing an executive summary of a cybersecurity report for a non-technical founder. The goal is to be clear, concise, and business-focused. Avoid technical jargon. Explain the key risks in terms of business impact (e.g., user trust, data loss, reputation).
+                
+                Here is the technical report data:
+                ${JSON.stringify(reportData, null, 2)}
+                
+                Based on this, write a 2-3 paragraph summary. Start with the overall health of the project and then briefly explain the most important findings and why they matter to the business. Conclude with a reassuring statement about the next steps.
+            `;
+
+            const apiKey = ""; // Left empty as per instructions for Canvas environment
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }]
+            };
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API call failed with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.candidates && result.candidates.length > 0 && result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+                return result.candidates[0].content.parts[0].text;
+            } else {
+                throw new Error("Failed to parse AI response for summary.");
+            }
+        }
+
+        // --- Report Rendering Logic ---
+        function renderReport(report, url) {
+            const { verdict, summary, findings } = report;
+
+            const verdictConfig = {
+                RED: { bgColor: 'bg-red-100', borderColor: 'border-red-500', textColor: 'text-red-700', icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`, title: 'DO NOT LAUNCH' },
+                YELLOW: { bgColor: 'bg-yellow-100', borderColor: 'border-yellow-500', textColor: 'text-yellow-700', icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>`, title: 'PROCEED WITH CAUTION' },
+                GREEN: { bgColor: 'bg-green-100', borderColor: 'border-green-500', textColor: 'text-green-700', icon: `<svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`, title: 'GO FOR LAUNCH' }
+            };
+
+            const config = verdictConfig[verdict] || verdictConfig.YELLOW;
+
+            const findingsHtml = findings.map(finding => `
+                <div class="bg-white p-6 rounded-lg border border-gray-200 mb-4">
+                    <div class="flex items-center mb-3">
+                        <span class="px-3 py-1 text-sm font-semibold rounded-full ${getSeverityBadge(finding.severity).bgColor} ${getSeverityBadge(finding.severity).textColor}">${finding.severity}</span>
+                        <h4 class="text-xl font-semibold text-gray-800 ml-3">${finding.title}</h4>
+                    </div>
+                    <div class="space-y-4">
+                        <div><h5 class="font-semibold text-gray-600">What it is:</h5><p class="text-gray-700">${finding.what_it_is}</p></div>
+                        <div><h5 class="font-semibold text-gray-600">Why it matters:</h5><p class="text-gray-700">${finding.why_it_matters}</p></div>
+                        <div><h5 class="font-semibold text-gray-600">How to fix it:</h5><div class="bg-gray-100 p-4 rounded-md text-gray-800 text-sm font-mono whitespace-pre-wrap">${finding.how_to_fix}</div></div>
+                    </div>
+                </div>
+            `).join('');
+            
+            const executiveSummaryHtml = `
+                <div class="bg-indigo-50 border-2 border-dashed border-indigo-200 rounded-lg p-6 mt-8">
+                    <h3 class="text-xl font-bold text-indigo-800 mb-3">✨ AI-Powered Executive Summary</h3>
+                    <p class="text-indigo-600 mb-4">Need to share this report with an investor or non-technical partner? Click here for a simple, business-focused summary.</p>
+                    <button id="generate-summary-btn" class="gemini-button font-semibold px-5 py-2 rounded-lg">Generate Summary</button>
+                    <div id="summary-loader" class="hidden mt-4 flex items-center space-x-2 text-indigo-700">
+                        <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <span>Generating...</span>
+                    </div>
+                    <div id="executive-summary-output" class="hidden mt-4 text-indigo-900 bg-indigo-100 p-4 rounded-md"></div>
+                </div>
+            `;
+
+            const reportHtml = `
+                <div class="bg-white rounded-xl card-shadow overflow-hidden">
+                    <div class="p-8 ${config.bgColor} border-b-4 ${config.borderColor}">
+                        <div class="flex flex-col sm:flex-row items-center text-center sm:text-left">
+                            <div class="flex-shrink-0 mb-4 sm:mb-0 sm:mr-6 ${config.textColor}">${config.icon}</div>
+                            <div>
+                                <h2 class="text-3xl font-bold ${config.textColor}">${config.title}</h2>
+                                <p class="text-lg mt-1 ${config.textColor}">${summary}</p>
+                                <p class="text-sm text-gray-500 mt-2">Scan report for: ${url}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        ${executiveSummaryHtml}
+                        <h3 class="text-2xl font-bold mt-8 mb-6 text-gray-800">Detailed Findings</h3>
+                        ${findingsHtml}
+                    </div>
+                </div>
+            `;
+
+            reportOutput.innerHTML = reportHtml;
+        }
+        
+        function getSeverityBadge(severity) {
+            switch (severity) {
+                case 'CRITICAL': return { bgColor: 'bg-red-100', textColor: 'text-red-800' };
+                case 'HIGH': return { bgColor: 'bg-orange-100', textColor: 'text-orange-800' };
+                case 'MEDIUM': return { bgColor: 'bg-yellow-100', textColor: 'text-yellow-800' };
+                case 'LOW': return { bgColor: 'bg-blue-100', textColor: 'text-blue-800' };
+                default: return { bgColor: 'bg-gray-100', textColor: 'text-gray-800' };
+            }
+        }
+    </script>
+
+</body>
+</html>
