@@ -1,0 +1,21 @@
+# Created for the Guardian2GoAI Backend MVP
+
+# --- Core Web Framework ---
+# Fast, modern web framework for building APIs
+fastapi
+
+# ASGI server for running FastAPI
+uvicorn
+
+# --- HTTP Requests ---
+# Modern, async-ready HTTP client for making API calls (e.g., to Gemini)
+httpx
+
+# --- Environment Management ---
+# For managing environment variables (API keys, settings) securely
+python-dotenv
+
+# --- Security Scanning Tools (as Python libraries if available) ---
+# Note: For the MVP, we will likely call command-line tools like Trivy and Nuclei
+# directly from the Python backend using the 'subprocess' module, so they don't
+# need to be listed here. This section is a placeholder for future libraries.
