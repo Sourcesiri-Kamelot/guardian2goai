@@ -1,0 +1,58 @@
+# Created by Guardian2GoAI's assistant
+
+# General
+.DS_Store
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Node modules
+node_modules/
+
+# Build output
+dist/
+build/
+.next/
+out/
+
+# Log files
+logs
+*.log
+
+# IDE & Editor specific files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Python specific
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+pip-wheel-metadata/
+.pytest_cache/
+.mypy_cache/
+.pyre/
+.ruff_cache/
+
+# Operating System files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Test reports
+coverage/
+.nyc_output/
